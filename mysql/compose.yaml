@@ -1,0 +1,44 @@
+services:
+  mi-mysql-1:
+    build:
+      context: ./mysql
+      dockerfile: Dockerfile
+    container_name: mi-mysql-1
+    ports:
+      - "3306:3306"
+    networks:
+      - mi-red-2
+    volumes:
+      - mi-vol-2:/var/lib/mysql
+    environment:
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=password
+      - MYSQL_DATABASE=mi-daw
+      - MYSQL_ROOT_PASSWORD=password
+    stdin_open: true
+    tty: true
+  
+  mi-phpmyadmin-1:
+    build:
+      context: ./phpmyadmin
+      dockerfile: Dockerfile
+    container_name: mi-phpmyadmin-1
+    ports:
+      - "9091:80"
+    networks:
+      - mi-red-2
+    environment:
+      - PMA_HOST=mi-mysql-1
+    stdin_open: true
+    tty: true
+
+networks:
+  mi-red-2:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.101.0.0/16
+
+volumes:
+  mi-vol-2:
