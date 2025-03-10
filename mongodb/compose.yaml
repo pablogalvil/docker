@@ -17,9 +17,7 @@ services:
     tty: true
 
   mi-mongo-express-1:
-    build:
-      context: ./mongo-express
-      dockerfile: Dockerfile
+    image: mongo-express:latest
     container_name: mi-mongo-express-1
     ports:
       - "9090:80"
